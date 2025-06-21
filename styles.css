@@ -29,8 +29,9 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
+    background-color: #E6F7FF; /* Light Blue for background */
+    font-family: 'Proxima Nova', 'Avenir', Arial, sans-serif;
+    color: #131313;
 }
 
 .game-wrapper {
@@ -42,87 +43,132 @@ body {
 
 .score-panel {
     display: flex;
-    justify-content: space-between;  /* Space between score and button */
+    justify-content: space-between;
     align-items: center;
     width: 800px;
-    padding: 10px;
+    padding: 14px 24px;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(44, 44, 44, 0.10);
+    border: 2px solid #2E9DF7; /* Blue border for focus */
 }
 
 .timer {
     flex: 0 1 auto;
     font-size: 24px;
     font-weight: bold;
+    color: #F5402C; /* Red for urgency */
 }
 
 #game-container {
     width: 800px;
     height: 600px;
-    background-color: #e6f7ff;
-    border: 2px solid #333;
-    border-radius: 8px;
+    background-color: #8BD1CB; /* Light Blue */
+    border: 3px solid #2E9DF7; /* Blue border */
+    border-radius: 12px;
     position: relative;
     overflow: hidden;
 }
 
-
 #start-btn {
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
+    padding: 10px 24px;
+    background-color: #FFC907; /* Yellow */
+    color: #131313;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: inherit;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(44,44,44,0.08);
 }
 
-#start-btn:hover {
-    background-color: #45a049;
+#start-btn:hover, #start-btn:focus {
+    background-color: #FF902A; /* Orange on hover */
+    color: #fff;
+    outline: 2px solid #2E9DF7;
 }
 
 .score {
-    flex: 0 1 auto;  /* Don't grow, can shrink, auto basis */
+    flex: 0 1 auto;
     font-size: 24px;
     font-weight: bold;
+    color: #159A48; /* Dark Green for positive feedback */
 }
 
 .water-drop {
     position: absolute;
-    width: 60px;  /* increased from 40px */
-    height: 60px; /* increased from 40px */
-    background-color: #0099ff;
+    width: 60px;
+    height: 60px;
+    background-color: #2E9DF7; /* Blue */
     border-radius: 50%;
     animation: dropFall linear forwards;
     transform-origin: center;
     cursor: pointer;
-    padding: 15px;  /* Add padding for larger click area */
-    margin: -15px;  /* Offset padding to maintain visual size */
-    transition: transform 0.1s ease;  /* Smooth hover effect */
+    padding: 15px;
+    margin: -15px;
+    transition: transform 0.1s ease, background 0.2s;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(44,44,44,0.12);
 }
 
 .water-drop:hover {
-    transform: scale(1.1);  /* Slight grow effect on hover */
+    transform: scale(1.1);
+    background-color: #FFC907; /* Yellow on hover */
 }
 
 .bad-drop {
-    background-color: #ff4444;
+    background-color: #F5402C; /* Red for bad drops */
+    border-color: #fff;
 }
 
 .game-title {
-    color: #131313;
+    color: #2E9DF7; /* Blue */
     font-size: 48px;
     margin-top: 0;
-    margin-bottom: 5px;  /* reduced from 20px */
+    margin-bottom: 5px;
     text-align: center;
+    font-family: 'Proxima Nova', 'Avenir', Arial, sans-serif;
+    letter-spacing: 1px;
+    font-weight: 900;
+    text-shadow: 1px 2px 0 #fff, 0 2px 8px #8BD1CB;
 }
 
 .game-tagline {
-    color: #666;
-    font-size: 18px;
+    color: #4FCB53; /* Green for encouragement */
+    font-size: 20px;
     margin-bottom: 20px;
     text-align: center;
+    font-family: 'Avenir', 'Proxima Nova', Arial, sans-serif;
+    font-weight: 600;
+}
+
+.game-over {
+    color: #F5402C;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 200px;
+    text-shadow: 1px 2px 0 #fff, 0 2px 8px #FFC907;
+}
+
+.confetti {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confetti-fall 1.5s linear forwards;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(600px) rotate(360deg);
+    opacity: 0.7;
+  }
 }
 
 @keyframes dropFall {
