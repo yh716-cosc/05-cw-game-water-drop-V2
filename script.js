@@ -5,8 +5,9 @@ let timeLeft = 30;
 let timerInterval;
 let score = 0; // Add this line
 
-// Wait for button click to start the game
+// Wait for button click to start or reset the game
 document.getElementById("start-btn").addEventListener("click", startGame);
+document.getElementById("reset-btn").addEventListener("click", resetGame);
 
 function startGame() {
   // Prevent multiple games from running at once
@@ -20,6 +21,9 @@ function startGame() {
 
   // Clear any end-game message or confetti
   document.getElementById("game-container").innerHTML = "";
+
+  // Disable start button until reset
+  document.getElementById("start-btn").disabled = true;
 
   // Start the countdown timer
   clearInterval(timerInterval);
@@ -114,6 +118,25 @@ function launchConfetti() {
   }
 }
 
+function resetGame() {
+  // Stop timers and clear drops
+  clearInterval(timerInterval);
+  clearInterval(dropMaker);
+  gameRunning = false;
+
+  // Reset score and timer
+  timeLeft = 30;
+  score = 0;
+  document.getElementById("time").textContent = timeLeft;
+  document.getElementById("score").textContent = score;
+
+  // Clear game area and messages
+  document.getElementById("game-container").innerHTML = "";
+
+  // Enable start button
+  document.getElementById("start-btn").disabled = false;
+}
+
 function endGame() {
   gameRunning = false;
   clearInterval(dropMaker);
@@ -131,5 +154,7 @@ function endGame() {
 
   document.getElementById("game-container").innerHTML =
     `<div class="game-over">Game Over!<br><span style="font-size:24px;display:block;margin-top:20px;">${message}</span></div>`;
-  // Here you could also show the score and offer to restart the game
+
+  // Enable start button only after reset
+  document.getElementById("start-btn").disabled = true;
 }

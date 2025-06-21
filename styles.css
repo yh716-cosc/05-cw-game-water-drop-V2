@@ -180,6 +180,26 @@ body {
     }
 }
 
+#reset-btn {
+    padding: 10px 24px;
+    background-color: #2E9DF7; /* Blue */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: inherit;
+    margin-left: 12px;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(44,44,44,0.08);
+}
+#reset-btn:hover, #reset-btn:focus {
+    background-color: #159A48; /* Dark Green on hover */
+    color: #fff;
+    outline: 2px solid #FFC907;
+}
+
 @media (max-width: 850px) {
     .game-wrapper, .score-panel, #game-container {
         width: 95vw;
