@@ -200,6 +200,29 @@ body {
     outline: 2px solid #FFC907;
 }
 
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.carousel-btn {
+  font-size: 1.5em;
+  background: #e0e0e0;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.carousel-label {
+  font-size: 1.2em;
+  font-weight: bold;
+  min-width: 80px;
+  text-align: center;
+}
+
 @media (max-width: 850px) {
     .game-wrapper, .score-panel, #game-container {
         width: 95vw;

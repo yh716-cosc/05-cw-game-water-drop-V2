@@ -5,24 +5,47 @@ let timeLeft = 30;
 let timerInterval;
 let score = 0; // Add this line
 
+const difficulties = {
+  easy:   { time: 45, winScore: 15, dropInterval: 1500, badChance: 0.15, dropSpeed: 5, dropSize: 70, badPenalty: 1 },
+  normal: { time: 30, winScore: 20, dropInterval: 1000, badChance: 0.25, dropSpeed: 4, dropSize: 60, badPenalty: 1 },
+  hard:   { time: 25, winScore: 20, dropInterval: 600,  badChance: 0.30, dropSpeed: 3, dropSize: 50, badPenalty: 2 }
+};
+
 // Wait for button click to start or reset the game
 document.getElementById("start-btn").addEventListener("click", startGame);
 document.getElementById("reset-btn").addEventListener("click", resetGame);
+
+// Carousel logic for difficulty selection
+const difficultyNames = ["Easy", "Normal", "Hard"];
+const difficultyKeys = ["easy", "normal", "hard"];
+let currentDifficultyIndex = 1; // Default to Normal
+
+function updateDifficultyLabel() {
+  document.getElementById("difficulty-label").textContent = difficultyNames[currentDifficultyIndex];
+}
+document.getElementById("carousel-left").addEventListener("click", () => {
+  currentDifficultyIndex = (currentDifficultyIndex + difficultyNames.length - 1) % difficultyNames.length;
+  updateDifficultyLabel();
+});
+document.getElementById("carousel-right").addEventListener("click", () => {
+  currentDifficultyIndex = (currentDifficultyIndex + 1) % difficultyNames.length;
+  updateDifficultyLabel();
+});
+updateDifficultyLabel();
 
 function startGame() {
   // Prevent multiple games from running at once
   if (gameRunning) return;
 
   gameRunning = true;
-  timeLeft = 30;
-  score = 0; // Reset score
+  const selectedKey = difficultyKeys[currentDifficultyIndex];
+  const settings = difficulties[selectedKey];
+
+  timeLeft = settings.time;
+  score = 0;
   document.getElementById("time").textContent = timeLeft;
-  document.getElementById("score").textContent = score; // Display score
-
-  // Clear any end-game message or confetti
+  document.getElementById("score").textContent = score;
   document.getElementById("game-container").innerHTML = "";
-
-  // Disable start button until reset
   document.getElementById("start-btn").disabled = true;
 
   // Start the countdown timer
@@ -35,39 +58,27 @@ function startGame() {
     }
   }, 1000);
 
-  // Create new drops every second (1000 milliseconds)
-  dropMaker = setInterval(createDrop, 1000);
+  clearInterval(dropMaker);
+  dropMaker = setInterval(() => createDrop(settings), settings.dropInterval);
 }
 
-function createDrop() {
+// Update createDrop to accept settings
+function createDrop(settings = difficulties["normal"]) {
   const drop = document.createElement("div");
-
-  // 25% chance to be a bad drop
-  const isBad = Math.random() < 0.25;
+  const isBad = Math.random() < settings.badChance;
   drop.className = isBad ? "water-drop bad-drop" : "water-drop";
-
-  // Make drops different sizes for visual variety
-  const initialSize = 60;
-  const sizeMultiplier = Math.random() * 0.8 + 0.5;
-  const size = initialSize * sizeMultiplier;
+  const size = settings.dropSize * (Math.random() * 0.8 + 0.5);
   drop.style.width = drop.style.height = `${size}px`;
-
-  // Position the drop randomly across the game width
   const gameWidth = document.getElementById("game-container").offsetWidth;
-  const xPosition = Math.random() * (gameWidth - 60);
+  const xPosition = Math.random() * (gameWidth - settings.dropSize);
   drop.style.left = xPosition + "px";
-
-  // Make drops fall for 4 seconds
-  drop.style.animationDuration = "4s";
-
-  // Add the new drop to the game screen
+  drop.style.animationDuration = settings.dropSpeed + "s";
   document.getElementById("game-container").appendChild(drop);
 
-  // Score logic
   drop.addEventListener("click", () => {
     if (!gameRunning) return;
     if (isBad) {
-      score = Math.max(0, score - 1); // Prevent negative score
+      score = Math.max(0, score - settings.badPenalty);
     } else {
       score++;
     }
@@ -75,7 +86,6 @@ function createDrop() {
     drop.remove();
   });
 
-  // Remove drops that reach the bottom (weren't clicked)
   drop.addEventListener("animationend", () => {
     drop.remove();
   });
@@ -137,24 +147,25 @@ function resetGame() {
   document.getElementById("start-btn").disabled = false;
 }
 
+// Update endGame to use winScore for selected difficulty
 function endGame() {
   gameRunning = false;
   clearInterval(dropMaker);
   clearInterval(timerInterval);
 
+  const selectedKey = difficultyKeys[currentDifficultyIndex];
+  const settings = difficulties[selectedKey];
+
   let message = "";
-  if (score >= 20) {
-    // Pick a random winning message
+  if (score >= settings.winScore) {
     message = winningMessages[Math.floor(Math.random() * winningMessages.length)];
-    setTimeout(launchConfetti, 100); // Launch confetti after DOM update
+    setTimeout(launchConfetti, 100);
   } else {
-    // Pick a random losing message
     message = losingMessages[Math.floor(Math.random() * losingMessages.length)];
   }
 
   document.getElementById("game-container").innerHTML =
     `<div class="game-over">Game Over!<br><span style="font-size:24px;display:block;margin-top:20px;">${message}</span></div>`;
 
-  // Enable start button only after reset
   document.getElementById("start-btn").disabled = true;
 }
