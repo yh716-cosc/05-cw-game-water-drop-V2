@@ -89,6 +89,9 @@ function createDrop(settings = difficulties["normal"]) {
   drop.style.animationDuration = settings.dropSpeed + "s";
   document.getElementById("game-container").appendChild(drop);
 
+  //sound effects 
+
+  
   drop.addEventListener("click", () => {
     if (!gameRunning) return;
     if (isBad) {
