@@ -7,8 +7,8 @@ let score = 0; // Add this line
 
 const difficulties = {
   easy:   { time: 45, winScore: 15, dropInterval: 1500, badChance: 0.15, dropSpeed: 5, dropSize: 70, badPenalty: 1 },
-  normal: { time: 30, winScore: 20, dropInterval: 1000, badChance: 0.25, dropSpeed: 4, dropSize: 60, badPenalty: 1 },
-  hard:   { time: 25, winScore: 20, dropInterval: 600,  badChance: 0.30, dropSpeed: 3, dropSize: 50, badPenalty: 2 }
+  normal: { time: 30, winScore: 20, dropInterval: 1000, badChance: 0.20, dropSpeed: 4, dropSize: 60, badPenalty: 1 },
+  hard:   { time: 25, winScore: 20, dropInterval: 600,  badChance: 0.25, dropSpeed: 3, dropSize: 50, badPenalty: 2 }
 };
 
 // Wait for button click to start or reset the game
@@ -57,6 +57,7 @@ function startGame() {
 
   timeLeft = settings.time;
   score = 0;
+  milestonesShown = [false, false, false]; // Reset milestones
   document.getElementById("time").textContent = timeLeft;
   document.getElementById("score").textContent = score;
   document.getElementById("game-container").innerHTML = "";
@@ -89,23 +90,93 @@ function createDrop(settings = difficulties["normal"]) {
   drop.style.animationDuration = settings.dropSpeed + "s";
   document.getElementById("game-container").appendChild(drop);
 
-  //sound effects 
-
-  
   drop.addEventListener("click", () => {
     if (!gameRunning) return;
+
+    // Play sound effect
     if (isBad) {
+      const badSound = document.getElementById("bad-drop-sound");
+      if (badSound) {
+        badSound.currentTime = 0;
+        badSound.play();
+      }
       score = Math.max(0, score - settings.badPenalty);
     } else {
+      const goodSound = document.getElementById("good-drop-sound");
+      if (goodSound) {
+        goodSound.currentTime = 0;
+        goodSound.play();
+      }
       score++;
     }
     document.getElementById("score").textContent = score;
+
+    // Milestone logic
+    const selectedKey = difficultyKeys[currentDifficultyIndex];
+    const winScore = difficulties[selectedKey].winScore;
+    const milestones = [
+      Math.ceil(winScore * 0.25),
+      Math.ceil(winScore * 0.5),
+      Math.ceil(winScore * 0.75)
+    ];
+    milestones.forEach((milestone, idx) => {
+      if (score === milestone && !milestonesShown[idx]) {
+        showMilestoneMessage(idx);
+        milestonesShown[idx] = true;
+      }
+    });
+
     drop.remove();
   });
 
   drop.addEventListener("animationend", () => {
     drop.remove();
   });
+}
+
+// Milestone messages for 25%, 50%, 75%
+const milestoneMessages = [
+  [
+    "Great start! Keep going!",
+    "Nice! You're on your way!",
+    "Good job! Stay focused!"
+  ],
+  [
+    "Halfway there! Awesome!",
+    "50% done! Keep it up!",
+    "You're making a splash!"
+  ],
+  [
+    "Just a bit more! Almost there!",
+    "75% reached! Finish strong!",
+    "So close! Don't stop now!"
+  ]
+];
+
+// Track which milestones have been shown
+let milestonesShown = [false, false, false];
+
+// Show milestone message at the top of the game area
+function showMilestoneMessage(level) {
+  // Remove any existing milestone message
+  let oldMsg = document.getElementById("milestone-message");
+  if (oldMsg) oldMsg.remove();
+
+  const msg = document.createElement("div");
+  msg.id = "milestone-message";
+  msg.className = "milestone-message";
+  // Pick a random message for this milestone
+  msg.textContent = milestoneMessages[level][Math.floor(Math.random() * milestoneMessages[level].length)];
+  document.getElementById("game-container").prepend(msg);
+
+  // Fade in
+  setTimeout(() => { msg.style.opacity = 1; }, 10);
+
+  // Fade out after 2.5 seconds, then remove
+  setTimeout(() => {
+    msg.style.opacity = 0;
+    setTimeout(() => { msg.remove(); }, 600);
+  }, 2500);
 }
 
 // Winning and losing messages
@@ -151,8 +222,10 @@ function resetGame() {
   clearInterval(dropMaker);
   gameRunning = false;
 
-  // Reset score and timer
-  timeLeft = 30;
+  // Reset score and timer to current difficulty's settings
+  const selectedKey = difficultyKeys[currentDifficultyIndex];
+  const settings = difficulties[selectedKey];
+  timeLeft = settings.time;
   score = 0;
   document.getElementById("time").textContent = timeLeft;
   document.getElementById("score").textContent = score;
@@ -177,6 +250,13 @@ function endGame() {
   if (score >= settings.winScore) {
     message = winningMessages[Math.floor(Math.random() * winningMessages.length)];
     setTimeout(launchConfetti, 100);
+
+    // Play victory sound
+    const victorySound = document.getElementById("victory-sound");
+    if (victorySound) {
+      victorySound.currentTime = 0;
+      victorySound.play();
+    }
   } else {
     message = losingMessages[Math.floor(Math.random() * losingMessages.length)];
   }
