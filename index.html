@@ -5,14 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Water Drop Game</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,900|Nunito:400,600,700,900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="game-wrapper">
+        <!-- Top: Logo, Title, Tagline -->
         <div style="text-align: center; margin-bottom: 16px; padding-top: 32px;">
             <img src="img/cw_logo-horizontal.png" alt="Logo" style="max-width: 300px; width: 100%; height: auto;">
         </div>
         <h1 class="game-title">Water Drop</h1>
         <p class="game-tagline">Catch the good drops, avoid the bad ones!</p>
+        
+        <!-- Main game area -->
+        <div id="game-container"></div>
+
+        <!-- Bottom: Score panel and difficulty carousel -->
         <div class="score-panel">
             <div class="score">Score: <span id="score">0</span></div>
             <div class="timer">Time: <span id="time">30</span>s</div>
@@ -20,14 +27,13 @@
             <button id="reset-btn">Reset</button>
         </div>
         
-        <!-- Difficulty carousel added here -->
         <div id="difficulty-carousel" class="carousel">
           <button id="carousel-left" class="carousel-btn">&#8592;</button>
           <span id="difficulty-label" class="carousel-label">Normal</span>
           <button id="carousel-right" class="carousel-btn">&#8594;</button>
-        </div>
-
-        <div id="game-container">
+          
+          <!-- Place this near your carousel in your HTML -->
+          <div id="win-condition" class="win-condition"></div>
         </div>
     </div>
     

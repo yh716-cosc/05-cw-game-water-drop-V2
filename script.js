@@ -20,8 +20,22 @@ const difficultyNames = ["Easy", "Normal", "Hard"];
 const difficultyKeys = ["easy", "normal", "hard"];
 let currentDifficultyIndex = 1; // Default to Normal
 
+function updateWinCondition() {
+  const selectedKey = difficultyKeys[currentDifficultyIndex];
+  const settings = difficulties[selectedKey];
+  document.getElementById("win-condition").textContent =
+    `Collect ${settings.winScore} drops in ${settings.time} seconds`;
+}
+
+// Update the label and win condition together
 function updateDifficultyLabel() {
   document.getElementById("difficulty-label").textContent = difficultyNames[currentDifficultyIndex];
+  updateWinCondition();
+
+  // Update the remaining time display
+  const selectedKey = difficultyKeys[currentDifficultyIndex];
+  const settings = difficulties[selectedKey];
+  document.getElementById("time").textContent = settings.time;
 }
 document.getElementById("carousel-left").addEventListener("click", () => {
   currentDifficultyIndex = (currentDifficultyIndex + difficultyNames.length - 1) % difficultyNames.length;
