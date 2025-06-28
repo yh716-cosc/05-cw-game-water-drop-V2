@@ -8,35 +8,40 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,900|Nunito:400,600,700,900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="game-wrapper">
-        <!-- Top: Logo, Title, Tagline -->
-        <div style="text-align: center; margin-bottom: 16px; padding-top: 32px;">
-            <img src="img/cw_logo-horizontal.png" alt="Logo" style="max-width: 300px; width: 100%; height: auto;">
-        </div>
-        <h1 class="game-title">Water Drop</h1>
-        <p class="game-tagline">Catch the good drops, avoid the bad ones!</p>
-        
-        <!-- Main game area -->
-        <div id="game-container"></div>
+  <div class="game-wrapper">
+    <!-- Top: Logo, Title, Tagline -->
+    <div style="text-align: center; margin-bottom: 16px; padding-top: 32px;">
+      <img src="img/cw_logo-horizontal.png" alt="Logo" style="max-width: 300px; width: 100%; height: auto;">
+    </div>
+    <h1 class="game-title">Water Drop</h1>
+    <p class="game-tagline">Catch the good drops, avoid the bad ones!</p>
+    
+    <!-- Main game area -->
+    <div id="game-container"></div>
 
-        <!-- Bottom: Score panel and difficulty carousel -->
-        <div class="score-panel">
-            <div class="score">Score: <span id="score">0</span></div>
-            <div class="timer">Time: <span id="time">30</span>s</div>
-            <button id="start-btn">Start Game</button>
-            <button id="reset-btn">Reset</button>
-        </div>
-        
-        <div id="difficulty-carousel" class="carousel">
-          <button id="carousel-left" class="carousel-btn">&#8592;</button>
-          <span id="difficulty-label" class="carousel-label">Normal</span>
-          <button id="carousel-right" class="carousel-btn">&#8594;</button>
-          
-          <!-- Place this near your carousel in your HTML -->
-          <div id="win-condition" class="win-condition"></div>
-        </div>
+    <!-- Bottom: Score panel and difficulty carousel -->
+    <div class="score-panel">
+      <div class="score">Score: <span id="score">0</span></div>
+      <div class="timer">Time: <span id="time">30</span>s</div>
+      <button id="start-btn">Start Game</button>
+      <button id="reset-btn">Reset</button>
     </div>
     
+    <div id="difficulty-carousel" class="carousel">
+      <button id="carousel-left" class="carousel-btn">&#8592;</button>
+      <span id="difficulty-label" class="carousel-label">Normal</span>
+      <button id="carousel-right" class="carousel-btn">&#8594;</button>
+      <div id="win-condition" class="win-condition"></div>
+    </div>
+
+    <!-- Footer with charity: water link -->
+    <footer class="footer" style="text-align:center; margin-top:32px; font-size:16px; padding: 18px 0; background: #E6F7FF; border-top: 4px solid #2E9DF7;">
+      <a href="https://www.charitywater.org/" target="_blank" rel="noopener" style="color:#2E9DF7; text-decoration:underline;">
+        Learn more at charity: water
+      </a>
+    </footer>
+    
     <script src="script.js"></script>
+  </div>
 </body>
 </html>
